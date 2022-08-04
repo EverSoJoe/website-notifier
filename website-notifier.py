@@ -1,9 +1,29 @@
 #!/usr/bin/env python3
 
 import json
+import os
+import subprocess
+from logging import info, error
 
 import requests
 from bs4 import BeautifulSoup
+
+def open_text_editor(filename):
+    if os.name == 'nt':
+        # untested
+        info('Opening Windows Notepad')
+        subprocess.Popen(['notepad', filename]).wait()
+    else:
+        info('Opening Linux system editor')
+        subprocess.Popen([os.environ['EDITOR'], filename]).wait()
+
+def get_config_dict(filename):
+    if not os.path.exists(filename):
+        info('Configuraiton file does not exist. Returning None')
+        return None
+    info('Loading configuration into dictionary and returning')
+    with open(filename, 'r') as f:
+        return json.load(f)
 
 def config_list(args):
     pass
